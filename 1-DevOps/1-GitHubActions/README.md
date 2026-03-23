@@ -3,7 +3,7 @@
 I denne workshopen skal du **selv opprette** en CI-pipeline med GitHub Actions for Idempotweet-applikasjonen.
 
 ## Læringsmål
-
+asdasd
 - Skrive en GitHub Actions workflow fra bunnen av
 - Trigge bygg automatisk på pull requests
 - Bruke path filters for å begrense når workflows kjører
