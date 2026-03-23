@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - "1-DevOps/idempotweet/**"
+      - ".github/workflows/ci.yml"
   workflow_call:
 
 jobs:
