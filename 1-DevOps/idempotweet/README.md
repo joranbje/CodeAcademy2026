@@ -1,5 +1,7 @@
 # Idempotweet
 
+![CI](https://github.com/joranbje/CodeAcademy2026/actions/workflows/ci.yml/badge.svg)
+
 A demo application showcasing a Twitter-like feed of "idems" (idempotent tweets) built with Next.js 16, React 19, and TanStack Query.
 
 ## Features
