@@ -7,7 +7,7 @@ A Java application that consumes `idem.created` events from RabbitMQ and writes 
 - Java 21+
 - Maven 3.8+
 - RabbitMQ running on localhost:5672 (see docker-compose.yml)
-- PostgreSQL running on localhost:5432 (see docker-compose.yml)
+- PostgreSQL running on localhost:5435 (see docker-compose.yml)
 
 NB! If you are experiencing port conflicts, then you are probably already running a service on that port. Stop the existing container and try again.
 
