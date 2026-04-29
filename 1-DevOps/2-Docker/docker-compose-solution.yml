@@ -1,0 +1,30 @@
+# Docker Compose Contract
+# Local development configuration for running the containerized application
+# Location: 1-DevOps/2-Docker/docker-compose.yml
+
+services:
+  app:
+    image: ghcr.io/${GITHUB_REPOSITORY:-owner/repo}:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=postgresql://codeacademy:codeacademy@postgres:5432/codeacademy
+    depends_on:
+      - postgres
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:17-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=codeacademy
+      - POSTGRES_PASSWORD=codeacademy
+      - POSTGRES_DB=codeacademy
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  postgres_data:

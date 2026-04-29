@@ -1,0 +1,58 @@
+# Local Development Docker Compose
+# Build and run all services locally
+# Usage: docker compose up --build
+
+name: codeacademy
+
+services:
+  rabbitmq:
+    image: rabbitmq:4.1.4-management-alpine
+    container_name: 'rabbitmq_ca'
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+      - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+    networks:
+      - code_academy_network
+  postgres:
+    container_name: postgres
+    image: postgres:17-alpine
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U codeacademy -d codeacademy" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    ports:
+      - "5435:5432"
+    environment:
+      - POSTGRES_USER=codeacademy
+      - POSTGRES_PASSWORD=codeacademy
+      - POSTGRES_DB=codeacademy
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+    networks:
+      - code_academy_network
+  #java-consumer:
+  #  container_name: java-consumer
+  #  image: java-consumer:local
+  #  build: .
+  #  environment:
+  #    - SPRING_PROFILES_ACTIVE=production
+  #    - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/codeacademy
+  #  ports:
+  #    - "8080:8080"
+  #  depends_on:
+  #    postgres:
+  #      condition: service_healthy
+  #  networks:
+  #    - code_academy_network
+
+networks:
+  code_academy_network:
+    driver: bridge
+
+volumes:
+  postgres_data:

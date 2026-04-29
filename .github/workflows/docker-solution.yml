@@ -1,0 +1,64 @@
+# Docker Workflow Contract
+# GitHub Actions workflow for Docker build and GHCR push
+# Workshop 2: Docker - containerization and registry publishing
+# Location: .github/workflows/docker.yml
+
+name: Docker
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '1-DevOps/idempotweet/**'
+      - '1-DevOps/2-Docker/**'
+      - '.github/workflows/docker.yml'
+  workflow_dispatch:
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  # Job 1: Reuse CI workflow for build and test
+  ci:
+    uses: ./.github/workflows/ci-solution.yml
+
+  # Job 2: Docker Build and Push (after CI passes)
+  docker:
+    name: Build and Push Docker Image
+    runs-on: ubuntu-latest
+    needs: ci
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=raw,value=latest
+            type=sha,prefix=sha-
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: 1-DevOps/idempotweet
+          file: 1-DevOps/2-Docker/Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          provenance: false

@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="Common/Common.csproj" />
+  <Project Path="Consumer/Consumer.csproj" />
+  <Project Path="Infrastructure/Infrastructure.csproj" />
+  <Project Path="Producer/Producer.csproj" />
+</Solution>

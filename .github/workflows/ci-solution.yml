@@ -1,0 +1,64 @@
+# CI Workflow Contract
+# GitHub Actions workflow for Continuous Integration
+# Workshop 1: GitHub Actions - build, test, validate
+# Location: .github/workflows/ci-solution.yml
+
+name: CI
+
+on:
+  pull_request:
+    paths:
+      - '1-DevOps/idempotweet/**'
+      - '.github/workflows/ci-solution.yml'
+  workflow_call:  # Allow other workflows to call this one
+
+jobs:
+  build-and-test:
+    name: Build and Test
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: 1-DevOps/idempotweet
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Enable Corepack
+        run: corepack enable
+        working-directory: .
+
+      - name: Get yarn cache directory
+        id: yarn-cache
+        run: echo "dir=$(yarn config get cacheFolder)" >> $GITHUB_OUTPUT
+
+      - name: Cache yarn dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.yarn-cache.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('1-DevOps/idempotweet/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Run tests
+        run: yarn test
+
+      - name: Run tests with coverage
+        run: yarn test:coverage
+
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v6
+        with:
+          projectBaseDir: 1-DevOps/idempotweet
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
