@@ -35,20 +35,20 @@ services:
     restart: unless-stopped
     networks:
       - code_academy_network
-  #java-consumer:
-  #  container_name: java-consumer
-  #  image: java-consumer:local
-  #  build: .
-  #  environment:
-  #    - SPRING_PROFILES_ACTIVE=production
-  #    - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/codeacademy
-  #  ports:
-  #    - "8080:8080"
-  #  depends_on:
-  #    postgres:
-  #      condition: service_healthy
-  #  networks:
-  #    - code_academy_network
+  java-consumer:
+    container_name: java-consumer
+    image: java-consumer:latest
+    build: .
+    environment:
+      - SPRING_PROFILES_ACTIVE=local
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/codeacademy
+    ports:
+      - "8090:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - code_academy_network
 
 networks:
   code_academy_network:

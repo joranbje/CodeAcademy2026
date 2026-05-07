@@ -3,6 +3,8 @@ package no.soprasteria.rabbit;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import no.soprasteria.rabbit.helper.RabbitConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.net.ssl.SSLContext;
@@ -13,6 +15,8 @@ import java.security.cert.X509Certificate;
 @Service
 public class RabbitMQConnectionHelper {
 
+    private static final Logger log = LoggerFactory.getLogger(RabbitMQConnectionHelper.class);
+
     private final RabbitConfig config;
 
     public RabbitMQConnectionHelper(RabbitConfig config) {
@@ -20,6 +24,7 @@ public class RabbitMQConnectionHelper {
     }
 
     public Connection getConnection() throws Exception {
+        log.info("Publishing to {}", config.getHost());
         ConnectionFactory factory = new ConnectionFactory();
         factory.setUsername(config.getUserName());
         factory.setPassword(config.getPassword());
