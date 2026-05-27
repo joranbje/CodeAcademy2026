@@ -1,0 +1,11 @@
+@host = http://localhost:5035
+
+### Hent kaffemeny
+GET {{host}}/menu
+Accept: application/json
+
+### Se den genererte OpenAPI-spesifikasjonen (åpne i browser)
+# {{host}}/openapi/v1.json
+
+### Åpne Scalar UI (åpne i browser)
+# {{host}}/scalar/v1

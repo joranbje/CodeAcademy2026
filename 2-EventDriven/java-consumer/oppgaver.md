@@ -47,6 +47,7 @@ at du har forstått alle de forskjellige kø-typene RabbitMQ har å tilby.
 2. Applikasjonen skal ha en main-metode som kobler seg på en fanout kø og parser disse meldingene.
 3. Skriv ut meldingene til consollen
 4. Lag også en publisher metode som publiserer meldinger med jevne mellomrom til exchangen.
+5. Observer det som er eksponert på http://localhost:8090/swagger-ui/index.html
 
 ### Hvis du trenger en utfordring
 1. Lag deg en program som publiserer og consumerer mange hundre meldinger i sekundet

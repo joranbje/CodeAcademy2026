@@ -33,12 +33,12 @@ public class FanOutMessageService {
     }
 
     private static void publishMessageToQueue(Channel channel, String message, String exchange, String routingKey) throws IOException {
-        /* channel.basicPublish(
+        channel.basicPublish(
                 exchange,
                 routingKey,
                 null,
                 message.getBytes());
-        log.info("[key={}] Sent '{}'", routingKey, message); */
+        log.info("[key={}] Sent '{}'", routingKey, message);
     }
 
     @Scheduled(fixedRate = 5000)

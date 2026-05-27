@@ -1,0 +1,43 @@
+openapi: 3.0.3
+info:
+  title: Kaffebar API
+  version: 1.0.0
+  description: Et enkelt contract-first API for å administrere bestillinger i en kaffebar.
+  
+paths:
+  /menu:
+    get:
+      summary: Hent kaffemeny
+      description: Returnerer en liste over alle tilgjengelige kaffedrikker i kaffebaren.
+      operationId: getMenu
+      responses:
+        '200':
+          description: En liste med kaffedrikker ble vellykket hentet.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Coffee'
+
+components:
+  schemas:
+    Coffee:
+      type: object
+      description: Representerer en kaffedrikk på menyen.
+      required:
+        - id
+        - name
+        - price
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "550e8400-e29b-41d4-a716-446655440000"
+        name:
+          type: string
+          example: "Kaffe Latte"
+        price:
+          type: number
+          format: double
+          example: 48.50
